@@ -2,6 +2,7 @@ package br.edu.unime.api2.service;
 
 import br.edu.unime.api2.entity.Paciente;
 import br.edu.unime.api2.repository.PacienteRepository;
+import br.edu.unime.api2.service.exceptions.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,45 +14,87 @@ public class PacienteService {
     @Autowired
     PacienteRepository pacienteRepository;
 
-    public List<Paciente> obterTodos(){
+    public List<Paciente> obterTodos() {
         return pacienteRepository.findAll();
     }
+
     public Paciente obterPeloNomeESobrenome(String nome, String sobrenome) throws Exception {
         Paciente paciente = pacienteRepository.findFirstByNomeAndSobrenome(nome, sobrenome);
 
-        if (paciente == null){
+        if (paciente == null) {
             throw new Exception("paciente não encontrado");
         }
 
         return paciente;
     }
-public void inserir(Paciente paciente){
+
+    public void inserir(Paciente paciente) {
         pacienteRepository.insert(paciente);
-}
-public Paciente atualizar(String nome, String sobrenome, Paciente novoPaciente) throws Exception{
-   Paciente pacienteAntigo = obterPeloNomeESobrenome(nome, sobrenome);
+    }
 
-    pacienteAntigo.setNome(novoPaciente.getNome());
-    pacienteAntigo.setSobrenome(novoPaciente.getSobrenome());
-    pacienteAntigo.setIdade(novoPaciente.getIdade());
-    pacienteAntigo.setSexo(novoPaciente.getSexo());
-    pacienteAntigo.setCpf(novoPaciente.getCpf());
-    pacienteAntigo.setContato(novoPaciente.getContato());
-    pacienteAntigo.setLogradouro(novoPaciente.getLogradouro());
-    pacienteAntigo.setNumero(novoPaciente.getNumero());
-    pacienteAntigo.setBairro(novoPaciente.getBairro());
-    pacienteAntigo.setCep(novoPaciente.getCep());
-    pacienteAntigo.setMunicipio(novoPaciente.getMunicipio());
-    pacienteAntigo.setEstado(novoPaciente.getEstado());
+    public Paciente atualizarPorId(String id, Paciente novosDadosDoPaciente) {
+        Optional<Paciente> paciente = findById(id);
 
-    pacienteRepository.save(pacienteAntigo);
+        if (paciente.isPresent()) {
+            Paciente novoPaciente = paciente.get();
+            novoPaciente.setNome(novosDadosDoPaciente.getNome());
+            novoPaciente.setSobrenome(novosDadosDoPaciente.getSobrenome());
+            novoPaciente.setCpf(novosDadosDoPaciente.getCpf());
+            novoPaciente.setIdade(novosDadosDoPaciente.getIdade());
+            novoPaciente.setSexo(novosDadosDoPaciente.getSexo());
+            novoPaciente.setContato(novosDadosDoPaciente.getContato());
+            novoPaciente.setLogradouro(novosDadosDoPaciente.getLogradouro());
+            novoPaciente.setNumero(novosDadosDoPaciente.getNumero());
+            novoPaciente.setCep(novosDadosDoPaciente.getCep());
+            novoPaciente.setContato(novosDadosDoPaciente.getContato());
+            novoPaciente.setMunicipio(novosDadosDoPaciente.getMunicipio());
+            novoPaciente.setEstado(novosDadosDoPaciente.getEstado());
+            pacienteRepository.save(novoPaciente);
+            return novoPaciente;
+        }
+        return null;
 
-    return pacienteAntigo;
-}
-public void deletar(String nome, String sobrenome) throws Exception {
-    Paciente paciente = obterPeloNomeESobrenome(nome, sobrenome);
+    }
 
-    pacienteRepository.delete(paciente);
+    public Paciente atualizar(String nome, String sobrenome, Paciente novoPaciente) throws Exception {
+        Paciente pacienteAntigo = obterPeloNomeESobrenome(nome, sobrenome);
+
+        pacienteAntigo.setNome(novoPaciente.getNome());
+        pacienteAntigo.setSobrenome(novoPaciente.getSobrenome());
+        pacienteAntigo.setIdade(novoPaciente.getIdade());
+        pacienteAntigo.setSexo(novoPaciente.getSexo());
+        pacienteAntigo.setCpf(novoPaciente.getCpf());
+        pacienteAntigo.setContato(novoPaciente.getContato());
+        pacienteAntigo.setLogradouro(novoPaciente.getLogradouro());
+        pacienteAntigo.setNumero(novoPaciente.getNumero());
+        pacienteAntigo.setBairro(novoPaciente.getBairro());
+        pacienteAntigo.setCep(novoPaciente.getCep());
+        pacienteAntigo.setMunicipio(novoPaciente.getMunicipio());
+        pacienteAntigo.setEstado(novoPaciente.getEstado());
+
+        pacienteRepository.save(pacienteAntigo);
+
+        return pacienteAntigo;
+    }
+
+    public void deletar(String nome, String sobrenome) throws Exception {
+        Paciente paciente = obterPeloNomeESobrenome(nome, sobrenome);
+
+        pacienteRepository.delete(paciente);
+    }
+
+    public void remove(String id) {
+        Optional<Paciente> paciente = findById(id);
+
+        paciente.ifPresent(value -> pacienteRepository.delete(value));
+    }
+
+    public Optional<Paciente> findById(String id) {
+        Optional<Paciente> paciente = pacienteRepository.findById(id);
+
+        Paciente entity = paciente.orElseThrow(() -> new EntityNotFoundException("Paciente Não Lacalizado!"));
+
+        return Optional.ofNullable(entity);
     }
 }
 

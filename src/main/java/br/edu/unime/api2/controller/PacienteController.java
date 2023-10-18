@@ -39,6 +39,17 @@ public class PacienteController {
         return ResponseEntity.ok().body(pacienteService.obterTodos());
     }
 
+    @GetMapping("/obter/{id}")
+    public ResponseEntity<Paciente> obterVacinaPorId(@PathVariable String id) {
+        Optional<Paciente> paciente = pacienteService.findById(id);
+
+        if (paciente.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok().body(paciente.get());
+    }
+
     @GetMapping("/{nome}/{sobrenome}")
     public ResponseEntity<?> obterPeloNome(@PathVariable String nome, @PathVariable String sobrenome) {
         try {
@@ -70,6 +81,18 @@ public class PacienteController {
         return ResponseEntity.created(null).body(paciente);
     }
 
+    @PutMapping("/editar/{id}")
+    public ResponseEntity<Paciente> atualizarPorId(@RequestBody Paciente novosDadosDoPaciente, @PathVariable String id) {
+        Optional<Paciente> paciente = pacienteService.findById(id);
+
+        if (paciente.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Paciente responseVacina = pacienteService.atualizarPorId(id, novosDadosDoPaciente);
+        return ResponseEntity.ok().body(responseVacina);
+    }
+
     @PutMapping("/{nome}/{sobrenome}")
     public ResponseEntity<?> atualizar(
             @PathVariable String nome,
@@ -88,7 +111,7 @@ public class PacienteController {
         }
     }
 
-    @DeleteMapping("/{nome}/{sobrenome}")
+    @DeleteMapping("/excluir/{nome}/{sobrenome}")
     public ResponseEntity<?> excluir(
             @PathVariable String nome,
             @PathVariable String sobrenome
@@ -103,6 +126,19 @@ public class PacienteController {
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resposta);
         }
+    }
+
+    @DeleteMapping("/remover/{id}")
+    public ResponseEntity<Paciente> remover(@PathVariable String id) {
+        Optional<Paciente> paciente = pacienteService.findById(id);
+
+        if (paciente.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        pacienteService.remove(id);
+
+        return ResponseEntity.ok().body(null);
     }
 
 }
