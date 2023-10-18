@@ -53,7 +53,7 @@ public class PacienteController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/cadastrar")
     public ResponseEntity<?> inserir(@RequestBody @Valid Paciente paciente, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
