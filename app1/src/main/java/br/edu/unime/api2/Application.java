@@ -1,13 +1,13 @@
-package br.edu.unime.ulisses.app1;
+package br.edu.unime.api2;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class 	App1Application {
+public class Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(App1Application.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 
 }

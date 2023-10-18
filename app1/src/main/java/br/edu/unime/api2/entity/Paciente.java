@@ -1,7 +1,8 @@
-package br.edu.unime.ulisses.app1.entity;
+package br.edu.unime.api2.entity;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -10,6 +11,7 @@ import javax.validation.constraints.Size;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Document(collection = "pacientes")
 public class Paciente {
 
     @Id

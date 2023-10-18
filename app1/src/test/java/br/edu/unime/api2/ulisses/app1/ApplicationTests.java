@@ -1,10 +1,10 @@
-package br.edu.unime.ulisses.app1;
+package br.edu.unime.api2.ulisses.app1;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class App1ApplicationTests {
+class ApplicationTests {
 
 	@Test
 	void contextLoads() {

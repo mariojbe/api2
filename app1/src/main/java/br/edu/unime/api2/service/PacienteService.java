@@ -1,7 +1,7 @@
-package br.edu.unime.ulisses.app1.service;
+package br.edu.unime.api2.service;
 
-import br.edu.unime.ulisses.app1.entity.Paciente;
-import br.edu.unime.ulisses.app1.repository.PacienteRepository;
+import br.edu.unime.api2.entity.Paciente;
+import br.edu.unime.api2.repository.PacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
