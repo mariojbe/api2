@@ -8,10 +8,10 @@
         <version>2.7.16</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>br.edu.unime.ulisses</groupId>
-    <artifactId>app1</artifactId>
+    <groupId>br.edu.unime.api2</groupId>
+    <artifactId>api2</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>app1</name>
+    <name>api2</name>
     <description>pw2</description>
     <properties>
         <java.version>17</java.version>
