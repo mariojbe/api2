@@ -1,27 +1,22 @@
-package br.edu.unime.api2.entity;
+package br.edu.unime.api2.dto;
 
-import br.edu.unime.api2.dto.PacienteDTO;
-import lombok.*;
+import br.edu.unime.api2.entity.Endereco;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "pacientes")
-public class Paciente {
-
-    @Id
-    private String id;
-
+@NoArgsConstructor
+public class PacienteDTO {
     @NotBlank
     @Size(min = 3, max = 100, message = "o nome deve ter entre 3 e 100 digitos!")
     private String nome;
@@ -43,14 +38,5 @@ public class Paciente {
     private String cep;
     private String municipio;
     private String estado;
-
-    private Endereco endereco;
-
-    public Paciente(PacienteDTO pacienteDTO) {
-        setNome(pacienteDTO.getNome());
-        setSobrenome(pacienteDTO.getSobrenome());
-        setCpf(pacienteDTO.getCpf());
-        setIdade(pacienteDTO.getIdade());
-    }
 
 }

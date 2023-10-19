@@ -1,7 +1,10 @@
 package br.edu.unime.api2.controller;
 
+import br.edu.unime.api2.dto.PacienteDTO;
+import br.edu.unime.api2.entity.Endereco;
 import br.edu.unime.api2.entity.Paciente;
 import br.edu.unime.api2.service.PacienteService;
+import br.edu.unime.api2.httpClient.CepHttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -20,6 +23,9 @@ public class PacienteController {
 
     @Autowired
     PacienteService pacienteService;
+
+    @Autowired
+    CepHttpClient cepHttpClient;
 
     // Método de Valdação e Exceções
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -65,20 +71,21 @@ public class PacienteController {
     }
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<?> inserir(@RequestBody @Valid Paciente paciente, BindingResult bindingResult) {
+    public ResponseEntity<?> inserir(@RequestBody @Valid PacienteDTO pacienteDTO, BindingResult bindingResult) {
+        Paciente paciente = new Paciente(pacienteDTO);
+
+        Endereco endereco = cepHttpClient.obterEnderecoPorCep(pacienteDTO.getCep());
+
+        paciente.setEndereco(endereco);
 
         if (bindingResult.hasErrors()) {
-            List<String> erros = bindingResult
-                    .getAllErrors()
-                    .stream()
-                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                    .toList();
+            List<String> erros = bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList();
 
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erros.toArray());
         }
         pacienteService.inserir(paciente);
 
-        return ResponseEntity.created(null).body(paciente);
+        return ResponseEntity.created(null).body(pacienteDTO);
     }
 
     @PutMapping("/editar/{id}")
@@ -94,11 +101,7 @@ public class PacienteController {
     }
 
     @PutMapping("/{nome}/{sobrenome}")
-    public ResponseEntity<?> atualizar(
-            @PathVariable String nome,
-            @PathVariable String sobrenome,
-            @RequestBody Paciente paciente
-    ) {
+    public ResponseEntity<?> atualizar(@PathVariable String nome, @PathVariable String sobrenome, @RequestBody Paciente paciente) {
         try {
             Paciente pacienteAtualizado = pacienteService.atualizar(nome, sobrenome, paciente);
 
@@ -112,10 +115,7 @@ public class PacienteController {
     }
 
     @DeleteMapping("/excluir/{nome}/{sobrenome}")
-    public ResponseEntity<?> excluir(
-            @PathVariable String nome,
-            @PathVariable String sobrenome
-    ) {
+    public ResponseEntity<?> excluir(@PathVariable String nome, @PathVariable String sobrenome) {
         try {
             pacienteService.deletar(nome, sobrenome);
 
