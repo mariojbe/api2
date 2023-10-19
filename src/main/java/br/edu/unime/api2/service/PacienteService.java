@@ -22,7 +22,7 @@ public class PacienteService {
         Paciente paciente = pacienteRepository.findFirstByNomeAndSobrenome(nome, sobrenome);
 
         if (paciente == null) {
-            throw new Exception("paciente não encontrado");
+            throw new Exception("Paciente não encontrado!");
         }
 
         return paciente;

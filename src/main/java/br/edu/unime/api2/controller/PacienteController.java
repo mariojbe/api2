@@ -1,10 +1,12 @@
 package br.edu.unime.api2.controller;
 
+import br.edu.unime.api2.controller.exceptions.StandardError;
 import br.edu.unime.api2.dto.PacienteDTO;
 import br.edu.unime.api2.entity.Endereco;
 import br.edu.unime.api2.entity.Paciente;
 import br.edu.unime.api2.service.PacienteService;
 import br.edu.unime.api2.httpClient.CepHttpClient;
+import br.edu.unime.api2.service.exceptions.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -14,7 +16,9 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.time.Instant;
 import java.util.*;
 
 @RestController
@@ -26,19 +30,6 @@ public class PacienteController {
 
     @Autowired
     CepHttpClient cepHttpClient;
-
-    // Método de Valdação e Exceções
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-        return errors;
-    }
 
     @GetMapping
     public ResponseEntity<List<Paciente>> obterTodos() {
@@ -139,6 +130,29 @@ public class PacienteController {
         pacienteService.remove(id);
 
         return ResponseEntity.ok().body(null);
+    }
+
+    // Método de Valdação e Exceções
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
+    }
+
+    public ResponseEntity<StandardError> entityNotFound(EntityNotFoundException e, HttpServletRequest request) {
+        StandardError err = new StandardError();
+        err.setTimestamp(Instant.now());
+        err.setStatus(HttpStatus.NOT_FOUND.value());
+        err.setError("Recurso Não Encontrado!");
+        err.setMessage(e.getMessage());
+        err.setPath(request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
     }
 
 }
