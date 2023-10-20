@@ -1,5 +1,7 @@
 package br.edu.unime.api2.controller.exceptions;
 
+import org.springframework.http.HttpStatus;
+
 import java.time.Instant;
 
 public class StandardError {
@@ -10,6 +12,15 @@ public class StandardError {
     private String path;
 
     public StandardError() {
+    }
+
+    public StandardError(HttpStatus httpStatus, String message) {
+    }
+
+    public StandardError(HttpStatus httpStatus, String localizedMessage, String errorOccurred) {
+    }
+
+    public StandardError(String message, String description) {
     }
 
     public Instant getTimestamp() {

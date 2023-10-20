@@ -21,6 +21,7 @@ import javax.validation.Valid;
 import java.time.Instant;
 import java.util.*;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/pacientes")
 public class PacienteController {
@@ -130,29 +131,6 @@ public class PacienteController {
         pacienteService.remove(id);
 
         return ResponseEntity.ok().body(null);
-    }
-
-    // Método de Valdação e Exceções
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-        return errors;
-    }
-
-    public ResponseEntity<StandardError> entityNotFound(EntityNotFoundException e, HttpServletRequest request) {
-        StandardError err = new StandardError();
-        err.setTimestamp(Instant.now());
-        err.setStatus(HttpStatus.NOT_FOUND.value());
-        err.setError("Recurso Não Encontrado!");
-        err.setMessage(e.getMessage());
-        err.setPath(request.getRequestURI());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
     }
 
 }

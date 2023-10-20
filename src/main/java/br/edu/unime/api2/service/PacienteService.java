@@ -4,6 +4,7 @@ import br.edu.unime.api2.entity.Paciente;
 import br.edu.unime.api2.repository.PacienteRepository;
 import br.edu.unime.api2.service.exceptions.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -96,6 +97,7 @@ public class PacienteService {
 
         return Optional.ofNullable(entity);
     }
+
 }
 
 
