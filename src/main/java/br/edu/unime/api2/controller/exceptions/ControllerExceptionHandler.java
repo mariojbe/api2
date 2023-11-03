@@ -45,7 +45,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<Object> handleAllUncaughtException(Exception exception, WebRequest request) {
-        final String errorMessage = "Unknown error occurred";
+        final String errorMessage = "Ocorreu um erro na aplicação. Nossa equipe deTI já foi notificada e em breve nossos serviços estarão reestabelecidos.Para maiores informações entre em contato pelo nosso WhatsApp 71 99999-9999. Lamentamos o ocorrido!";
         log.error(errorMessage, exception);
         return buildErrorResponse(exception, errorMessage, HttpStatus.INTERNAL_SERVER_ERROR, request);
     }

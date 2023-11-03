@@ -1,11 +1,8 @@
 package br.edu.unime.api2.controller;
 
 import br.edu.unime.api2.controller.exceptions.StandardError;
-import br.edu.unime.api2.dto.PacienteDTO;
-import br.edu.unime.api2.entity.Endereco;
 import br.edu.unime.api2.entity.Paciente;
 import br.edu.unime.api2.service.PacienteService;
-import br.edu.unime.api2.httpClient.CepHttpClient;
 import br.edu.unime.api2.service.exceptions.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -28,9 +25,6 @@ public class PacienteController {
 
     @Autowired
     PacienteService pacienteService;
-
-    @Autowired
-    CepHttpClient cepHttpClient;
 
     @GetMapping
     public ResponseEntity<List<Paciente>> obterTodos() {
@@ -63,25 +57,16 @@ public class PacienteController {
     }
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<?> inserir(@RequestBody @Valid PacienteDTO pacienteDTO, BindingResult bindingResult) {
-        Paciente paciente = new Paciente(pacienteDTO);
-
-        Endereco endereco = cepHttpClient.obterEnderecoPorCep(pacienteDTO.getCep());
-
-        paciente.setEndereco(endereco);
-
-        if (bindingResult.hasErrors()) {
-            List<String> erros = bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList();
-
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erros.toArray());
+    public ResponseEntity<Paciente> inserir(@RequestBody @Valid Paciente paciente) {
+        if (pacienteService.inserir(paciente) == null) {
+            return ResponseEntity.badRequest().body(paciente);
         }
-        pacienteService.inserir(paciente);
-
-        return ResponseEntity.created(null).body(pacienteDTO);
+        return ResponseEntity.created(null).body(paciente);
     }
 
     @PutMapping("/editar/{id}")
-    public ResponseEntity<Paciente> atualizarPorId(@RequestBody Paciente novosDadosDoPaciente, @PathVariable String id) {
+    public ResponseEntity<Paciente> atualizarPorId(@RequestBody Paciente novosDadosDoPaciente,
+                                                   @PathVariable String id) {
         Optional<Paciente> paciente = pacienteService.findById(id);
 
         if (paciente.isEmpty()) {
@@ -93,7 +78,8 @@ public class PacienteController {
     }
 
     @PutMapping("/{nome}/{sobrenome}")
-    public ResponseEntity<?> atualizar(@PathVariable String nome, @PathVariable String sobrenome, @RequestBody Paciente paciente) {
+    public ResponseEntity<?> atualizar(@PathVariable String nome, @PathVariable String sobrenome,
+                                       @RequestBody Paciente paciente) {
         try {
             Paciente pacienteAtualizado = pacienteService.atualizar(nome, sobrenome, paciente);
 

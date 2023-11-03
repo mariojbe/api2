@@ -29,8 +29,9 @@ public class PacienteService {
         return paciente;
     }
 
-    public void inserir(Paciente paciente) {
+    public Paciente inserir(Paciente paciente) {
         pacienteRepository.insert(paciente);
+        return paciente;
     }
 
     public Paciente atualizarPorId(String id, Paciente novosDadosDoPaciente) {

@@ -1,6 +1,5 @@
 package br.edu.unime.api2.entity;
 
-import br.edu.unime.api2.dto.PacienteDTO;
 import lombok.*;
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.data.annotation.Id;
@@ -11,7 +10,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
 
 @Data
 @NoArgsConstructor
@@ -43,14 +41,5 @@ public class Paciente {
     private String cep;
     private String municipio;
     private String estado;
-
-    private Endereco endereco;
-
-    public Paciente(PacienteDTO pacienteDTO) {
-        setNome(pacienteDTO.getNome());
-        setSobrenome(pacienteDTO.getSobrenome());
-        setCpf(pacienteDTO.getCpf());
-        setIdade(pacienteDTO.getIdade());
-    }
 
 }
