@@ -29,6 +29,16 @@ public class PacienteService {
         return paciente;
     }
 
+    public List<Paciente> findByEstado(String estado) {
+        try {
+            List<Paciente> registroVacinacao = pacienteRepository.findByEstado(estado);
+        } catch (Exception e) {
+            throw new ClassCastException("Registro Não Lacalizado!");
+        }
+        return pacienteRepository.findByEstado(estado);
+    }
+
+
     public Paciente inserir(Paciente paciente) {
         pacienteRepository.insert(paciente);
         return paciente;

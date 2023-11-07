@@ -42,6 +42,17 @@ public class PacienteController {
         return ResponseEntity.ok().body(paciente.get());
     }
 
+    @GetMapping("/obter/uf/{estado}")
+    public List<Paciente> obterPorEstadoPaciente(@PathVariable String estado) {
+        List<Paciente> paciente = pacienteService.findByEstado(estado);
+
+        if (paciente.isEmpty()) {
+            return (List<Paciente>) ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok().body(paciente).getBody();
+    }
+
     @GetMapping("/{nome}/{sobrenome}")
     public ResponseEntity<?> obterPeloNome(@PathVariable String nome, @PathVariable String sobrenome) {
         try {
