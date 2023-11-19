@@ -3,15 +3,7 @@
 API 2 Gerenciar Pacientes
 
 Este repositório contém um projeto API REST simples, construído com Java Spring & MongoDB.
-O objetivo deste repositório é gerenciar o registro de vacinação através de CRUD Java com o seguintes dados:
-
-• Identificação do Paciente
-
-• Identificação da Vacina
-
-• Identificação da Dose
-
-• Identificação do Profissional de Saúde (Nome e CPF)
+O objetivo deste repositório é gerenciar o registro de paciente através de CRUD Java 
 
 Este projeto foi desenvolvido durante a disciplina de Programação para Web II
 do curso de Bacharelado em Sitemas de Informação da UNIME(União Metropolitana de Educação e Cultura)
@@ -29,7 +21,7 @@ no 2º semestre de 2023.
 1. Clone o repositório:
 
 ```bash
-$ git clone https://github.com/mariojbe/api-gerenciar-registro-vacinacao.git
+$ git clone https://github.com/ulissesr/api2.git
 ```
 
 2. Instale as dependências com o Maven
@@ -44,15 +36,37 @@ $ git clone https://github.com/mariojbe/api-gerenciar-registro-vacinacao.git
 A API fornece os seguintes endpoints:
 
 ```markdown
-GET /api/vacinacao - Retorna uma lista de todos os dados do registro de vacinação.
+GET /api/pacientes - listar todos pacientes.
 
-GET /api/vacinacao/obter/{id} - Retorna dados de apenas um registro de uma vacinação através do id.
+GET /api/pacientes/nome/sobrenome - obter paciente pelo nome e sobrenome.
 
-POST /api/vacinacao/cadastrar - Registra uma nova vacinação.
+DELETE /api/pacientes/remover/{id} - remover pelo id do paciente
 
-PUT /api/vacinacao/editar/{id} - Atualiza os dados de registro de uma vacinação.
+PUT /api/pacientes/editar/{id} - editar um paciente pelo id
+{
+"nome": "John",
+"sobrenome": "Wilson",
+"cpf": "18929954502",
+"idade": 1,
+"sexo": "Masculino",
+"contato": "(489)707-7607",
+"logradouro": "569 Amanda Summit Apt. 189",
+"numero": "44",
+"bairro": "West Latashaburgh",
+"cep": "41299-150",
+"municipio": "Port Tamarahaven",
+"estado": "BA"
+}
+POST /api/pacientes/cadastrar - cadastra um paciente
+exemplo do corpo:
+{
+"nome": "bruno",
+"sobrenome": "fraga",
+"cpf": "999999999", - deve ser um cpf valido.
+"idade": 15,
+"cep": "41299-150",
+}
 
-DELETE /api/vacinacao/remover/{id} - Exclui um registro de vacinação.
 ```
 
 ## Base de Dados
