@@ -6,10 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Data
 @NoArgsConstructor
@@ -33,7 +30,9 @@ public class Paciente {
     @Min(value = 1, message = "Informe uma idade maior que 0!")
     private int idade;
 
+    @Pattern(regexp = "^[M|F|m|f]{1}$", message = "Favor informar 'M', 'm', 'F' ou 'f' no campo sexo")
     private String sexo;
+
     private String contato;
     private String logradouro;
     private String numero;

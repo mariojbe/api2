@@ -24,20 +24,20 @@ public class ErrorResponse {
     @Setter
     @RequiredArgsConstructor
     private static class ValidationError {
-        private final String field;
-        private final String message;
+        private final String campo;
+        private final String mensagem;
     }
 
-    public void addValidationError(String field, String message) {
+    public void addValidationError(String campo, String mensagem) {
         if (Objects.isNull(errors)) {
             this.errors = new ArrayList<>();
         }
-        this.errors.add(new ValidationError(field, message));
+        this.errors.add(new ValidationError(campo, mensagem));
     }
 
     public String toJson() {
         return "{\"status\": " + getStatus() + ", " +
-                "\"message\": \"" + getMessage() + "\"}";
+                "\"mensagem\": \"" + getMessage() + "\"}";
     }
 
 }
