@@ -3,11 +3,13 @@ package br.edu.unime.api2.service;
 import br.edu.unime.api2.entity.Paciente;
 import br.edu.unime.api2.repository.PacienteRepository;
 import br.edu.unime.api2.service.exceptions.CPFExistenteException;
+import br.edu.unime.api2.service.exceptions.CPFNotUpdateException;
 import br.edu.unime.api2.service.exceptions.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PacienteService {
@@ -57,7 +59,7 @@ public class PacienteService {
             Paciente novoPaciente = paciente.get();
 
             if (!novoPaciente.getCpf().equals(novosDadosDoPaciente.getCpf())) {
-                throw new Exception("A edição de CPF não permitida no sistema");
+                throw new CPFNotUpdateException("Atenção! A edição do campo CPF não permitida em nosso sistema.");
             }
 
             novoPaciente.setNome(novosDadosDoPaciente.getNome());

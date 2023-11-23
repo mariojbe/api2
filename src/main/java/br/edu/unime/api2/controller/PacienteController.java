@@ -76,7 +76,7 @@ public class PacienteController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Paciente> atualizarPorId(@RequestBody Paciente novosDadosDoPaciente,
+    public ResponseEntity<Paciente> atualizarPorId(@RequestBody @Valid Paciente novosDadosDoPaciente,
                                                    @PathVariable String id) throws Exception {
         Optional<Paciente> paciente = pacienteService.findById(id);
 

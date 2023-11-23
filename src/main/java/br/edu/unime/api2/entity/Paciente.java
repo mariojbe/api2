@@ -24,7 +24,8 @@ public class Paciente {
 
     @CPF
     @Indexed(unique = true)
-    @NotBlank
+    @NotBlank(message = "O CPF não deve estar em branco")
+    @NotNull
     private String cpf;
 
     @NotNull

@@ -153,6 +153,18 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
     }
 
+    @ExceptionHandler(CPFNotUpdateException.class)
+    public ResponseEntity<StandardError> handleCPFExistenteException(CPFNotUpdateException e, HttpServletRequest request) {
+
+        StandardError err = new StandardError();
+        err.setTimestamp(Instant.now());
+        err.setStatus(HttpStatus.UNPROCESSABLE_ENTITY.value());
+        err.setMessage(e.getMessage());
+        err.setPath(request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(err);
+
+    }
+
     private ResponseEntity<Object> buildErrorResponse(Exception exception, HttpStatus httpStatus, WebRequest request) {
         return buildErrorResponse(exception, exception.getMessage(), httpStatus, request);
     }
