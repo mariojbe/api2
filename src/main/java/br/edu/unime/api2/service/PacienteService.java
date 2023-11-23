@@ -96,50 +96,6 @@ public class PacienteService {
         return null;
     }
 
-    public Paciente atualizarParcialPorId(String id, Paciente novosDadosDoPaciente) throws Exception {
-        Optional<Paciente> paciente = Optional.ofNullable(findById(id).orElseThrow(() -> new EntityNotFoundException("Paciente não encontrado com o ID: " + id)));
-
-        if (paciente.isPresent()) {
-            Paciente novoPaciente = paciente.get();
-
-            if (!novoPaciente.getCpf().equals(novosDadosDoPaciente.getCpf())) {
-                throw new CPFNotUpdateException("Atenção! A edição do campo CPF não permitida em nosso sistema.");
-            }
-
-            novoPaciente.setNome(novosDadosDoPaciente.getNome());
-            novoPaciente.setSobrenome(novosDadosDoPaciente.getSobrenome());
-            novoPaciente.setCpf(novosDadosDoPaciente.getCpf());
-            novoPaciente.setIdade(novosDadosDoPaciente.getIdade());
-            if (novosDadosDoPaciente.getSexo() != null) {
-                novoPaciente.setSexo(novosDadosDoPaciente.getSexo());
-            }
-            if (novosDadosDoPaciente.getContato() != null) {
-                novoPaciente.setContato(novosDadosDoPaciente.getContato());
-            }
-            if (novosDadosDoPaciente.getLogradouro() != null) {
-                novoPaciente.setLogradouro(novosDadosDoPaciente.getLogradouro());
-            }
-            if (novosDadosDoPaciente.getNumero() != null) {
-                novoPaciente.setNumero(novosDadosDoPaciente.getNumero());
-            }
-            if (novosDadosDoPaciente.getBairro() != null) {
-                novoPaciente.setBairro(novosDadosDoPaciente.getBairro());
-            }
-            if (novosDadosDoPaciente.getCep() != null) {
-                novoPaciente.setCep(novosDadosDoPaciente.getCep());
-            }
-            if (novosDadosDoPaciente.getMunicipio() != null) {
-                novoPaciente.setMunicipio(novosDadosDoPaciente.getMunicipio());
-            }
-            if (novosDadosDoPaciente.getEstado() != null) {
-                novoPaciente.setEstado(novosDadosDoPaciente.getEstado());
-            }
-            pacienteRepository.save(novoPaciente);
-            return novoPaciente;
-        }
-        return null;
-    }
-
     public void remove(String id) {
         Optional<Paciente> paciente = findById(id);
 

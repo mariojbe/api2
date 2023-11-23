@@ -1,22 +1,17 @@
 package br.edu.unime.api2.controller;
 
-import br.edu.unime.api2.controller.exceptions.StandardError;
 import br.edu.unime.api2.entity.Paciente;
 import br.edu.unime.api2.service.PacienteService;
-import br.edu.unime.api2.service.exceptions.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.time.Instant;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @CrossOrigin("*")
 @RestController
@@ -85,19 +80,6 @@ public class PacienteController {
         }
 
         Paciente responseVacina = pacienteService.atualizarPorId(id, novosDadosDoPaciente);
-        return ResponseEntity.ok().body(responseVacina);
-    }
-
-    @PatchMapping("{id}")
-    public ResponseEntity<Paciente> atualizarParcialPorId(@RequestBody @Valid Paciente novosDadosDoPaciente,
-                                                          @PathVariable String id) throws Exception {
-        Optional<Paciente> paciente = pacienteService.findById(id);
-
-        if (paciente.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        Paciente responseVacina = pacienteService.atualizarParcialPorId(id, novosDadosDoPaciente);
         return ResponseEntity.ok().body(responseVacina);
     }
 
