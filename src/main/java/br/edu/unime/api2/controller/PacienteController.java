@@ -89,7 +89,7 @@ public class PacienteController {
         return ResponseEntity.created(null).body(paciente);
     }
 
-    @PutMapping("/editar/{id}")
+    @PutMapping("{id}")
     public ResponseEntity<Paciente> atualizarPorId(@RequestBody Paciente novosDadosDoPaciente,
                                                    @PathVariable String id) {
         Optional<Paciente> paciente = pacienteService.findById(id);

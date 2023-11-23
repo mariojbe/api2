@@ -71,7 +71,6 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         StandardError err = new StandardError();
         err.setTimestamp(Instant.now());
         err.setStatus(HttpStatus.NOT_FOUND.value());
-        err.setError("EntityNotFoundException!");
         err.setMessage(e.getMessage());
         err.setPath(request.getRequestURI());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
@@ -83,7 +82,6 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         StandardError err = new StandardError();
         err.setTimestamp(Instant.now());
         err.setStatus(HttpStatus.BAD_REQUEST.value());
-        err.setError("NullPointerException!");
         err.setMessage(e.getMessage());
         err.setPath(request.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
@@ -96,7 +94,6 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         StandardError err = new StandardError();
         err.setTimestamp(Instant.now());
         err.setStatus(HttpStatus.BAD_REQUEST.value());
-        err.setError("IllegalArgumentException!");
         err.setMessage(e.getMessage());
         err.setPath(request.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
@@ -132,14 +129,12 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return buildErrorResponse(dataBindingViolationException, HttpStatus.CONFLICT, request);
     }
 
-
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<StandardError> MethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e, HttpServletRequest request) {
 
         StandardError err = new StandardError();
         err.setTimestamp(Instant.now());
         err.setStatus(HttpStatus.BAD_REQUEST.value());
-        err.setError("MethodArgumentTypeMismatchException!");
         err.setMessage(e.getMessage());
         err.setPath(request.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
@@ -152,13 +147,11 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         StandardError err = new StandardError();
         err.setTimestamp(Instant.now());
         err.setStatus(HttpStatus.CONFLICT.value());
-        err.setError("CPF NÃO PODE SER DUPLICADO!");
         err.setMessage(e.getMessage());
         err.setPath(request.getRequestURI());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(err);
 
     }
-
 
     private ResponseEntity<Object> buildErrorResponse(Exception exception, HttpStatus httpStatus, WebRequest request) {
         return buildErrorResponse(exception, exception.getMessage(), httpStatus, request);

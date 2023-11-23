@@ -52,7 +52,7 @@ public class PacienteService {
     public Paciente inserir(Paciente paciente) throws Exception {
 
         if (pacienteRepository.findByCpf(paciente.getCpf()).isPresent()) {
-            throw new CPFExistenteException("O CPF já existe na base de dados!: " + paciente.getCpf());
+            throw new CPFExistenteException("O CPF informado já encontra-se cadastrado em nosso sistema!: " + paciente.getCpf());
         }
 
         pacienteRepository.insert(paciente);
@@ -60,7 +60,11 @@ public class PacienteService {
     }
 
     public Paciente atualizarPorId(String id, Paciente novosDadosDoPaciente) {
-        Optional<Paciente> paciente = findById(id);
+        Optional<Paciente> paciente = Optional.ofNullable(findById(id).orElseThrow(() -> new EntityNotFoundException("Paciente não encontrado com o ID: " + id)));
+
+        if (!pacienteRepository.findByCpf(paciente.get().getCpf()).equals(novosDadosDoPaciente.getCpf())) {
+            throw new CPFExistenteException("A edição de CPF não permitida no sistema");
+        }
 
         if (paciente.isPresent()) {
             Paciente novoPaciente = paciente.get();
@@ -123,13 +127,6 @@ public class PacienteService {
 
         return Optional.ofNullable(entity);
     }
-
-
-    /*public void inserirCPF(String cpf) {
-        if (pacienteRepository.findByCpf(cpf)) {
-            throw new CPFExistenteException("CPF já existe: " + cpf);
-        }
-    }*/
 
 }
 

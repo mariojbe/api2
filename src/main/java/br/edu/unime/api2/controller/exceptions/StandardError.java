@@ -7,7 +7,6 @@ import java.time.Instant;
 public class StandardError {
     private Instant timestamp;
     private Integer status;
-    private static String error;
     private String message;
     private String path;
 
@@ -37,14 +36,6 @@ public class StandardError {
 
     public void setStatus(Integer status) {
         this.status = status;
-    }
-
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
-        this.error = error;
     }
 
     public String getMessage() {
