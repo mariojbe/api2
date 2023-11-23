@@ -31,8 +31,8 @@ public class PacienteController {
         return ResponseEntity.ok().body(pacienteService.obterTodos());
     }
 
-    @GetMapping("/obter/{id}")
-    public ResponseEntity<Paciente> obterVacinaPorId(@PathVariable String id) {
+    @GetMapping("{id}")
+    public ResponseEntity<Paciente> obterPacientePorId(@PathVariable String id) {
         Optional<Paciente> paciente = pacienteService.findById(id);
 
         if (paciente.isEmpty()) {
@@ -42,7 +42,7 @@ public class PacienteController {
         return ResponseEntity.ok().body(paciente.get());
     }
 
-    @GetMapping("/obter/uf/{estado}")
+    @GetMapping("{estado}")
     public List<Paciente> obterPorEstadoPaciente(@PathVariable String estado) {
         List<Paciente> paciente = pacienteService.findByEstado(estado);
 
@@ -53,21 +53,7 @@ public class PacienteController {
         return ResponseEntity.ok().body(paciente).getBody();
     }
 
-    @GetMapping("/{nome}/{sobrenome}")
-    public ResponseEntity<?> obterPeloNome(@PathVariable String nome, @PathVariable String sobrenome) {
-        try {
-            Paciente paciente = pacienteService.obterPeloNomeESobrenome(nome, sobrenome);
-
-            return ResponseEntity.ok().body(paciente);
-        } catch (Exception e) {
-            Map<String, String> resposta = new HashMap<>();
-            resposta.put("mensagem", e.getMessage());
-
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resposta);
-        }
-    }
-
-    @GetMapping("/{cpf}")
+    @GetMapping("cpf/{cpf}")
     public ResponseEntity<?> findByCpf(@PathVariable String cpf) {
         try {
             Optional<Paciente> paciente = pacienteService.findByCpf(cpf);
@@ -91,7 +77,7 @@ public class PacienteController {
 
     @PutMapping("{id}")
     public ResponseEntity<Paciente> atualizarPorId(@RequestBody Paciente novosDadosDoPaciente,
-                                                   @PathVariable String id) {
+                                                   @PathVariable String id) throws Exception {
         Optional<Paciente> paciente = pacienteService.findById(id);
 
         if (paciente.isEmpty()) {
@@ -102,36 +88,7 @@ public class PacienteController {
         return ResponseEntity.ok().body(responseVacina);
     }
 
-    @PutMapping("/{nome}/{sobrenome}")
-    public ResponseEntity<?> atualizar(@PathVariable String nome, @PathVariable String sobrenome,
-                                       @RequestBody Paciente paciente) {
-        try {
-            Paciente pacienteAtualizado = pacienteService.atualizar(nome, sobrenome, paciente);
-
-            return ResponseEntity.ok().body(pacienteAtualizado);
-        } catch (Exception e) {
-            Map<String, String> resposta = new HashMap<>();
-            resposta.put("mensagem", e.getMessage());
-
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resposta);
-        }
-    }
-
-    @DeleteMapping("/excluir/{nome}/{sobrenome}")
-    public ResponseEntity<?> excluir(@PathVariable String nome, @PathVariable String sobrenome) {
-        try {
-            pacienteService.deletar(nome, sobrenome);
-
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            Map<String, String> resposta = new HashMap<>();
-            resposta.put("mensagem", e.getMessage());
-
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resposta);
-        }
-    }
-
-    @DeleteMapping("/remover/{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<Paciente> remover(@PathVariable String id) {
         Optional<Paciente> paciente = pacienteService.findById(id);
 

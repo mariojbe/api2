@@ -24,6 +24,7 @@ public class Paciente {
 
     @CPF
     @Indexed(unique = true)
+    @NotBlank
     private String cpf;
 
     @NotNull

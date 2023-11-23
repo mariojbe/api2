@@ -10,8 +10,6 @@ public interface PacienteRepository extends MongoRepository<Paciente, String> {
 
     public Optional<Paciente> findById(String id);
 
-    public Paciente findFirstByNomeAndSobrenome(String nome, String sobrenome);
-
     public Optional<Paciente> findByCpf(String cpf);
 
     List<Paciente> findByEstado(String estado);

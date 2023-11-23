@@ -19,16 +19,6 @@ public class PacienteService {
         return pacienteRepository.findAll();
     }
 
-    public Paciente obterPeloNomeESobrenome(String nome, String sobrenome) throws Exception {
-        Paciente paciente = pacienteRepository.findFirstByNomeAndSobrenome(nome, sobrenome);
-
-        if (paciente == null) {
-            throw new Exception("Paciente não encontrado!");
-        }
-
-        return paciente;
-    }
-
     public Optional<Paciente> findByCpf(String cpf) throws Exception {
         Optional<Paciente> paciente = pacienteRepository.findByCpf(cpf);
 
@@ -59,15 +49,17 @@ public class PacienteService {
         return paciente;
     }
 
-    public Paciente atualizarPorId(String id, Paciente novosDadosDoPaciente) {
-        Optional<Paciente> paciente = Optional.ofNullable(findById(id).orElseThrow(() -> new EntityNotFoundException("Paciente não encontrado com o ID: " + id)));
-
-        if (!pacienteRepository.findByCpf(paciente.get().getCpf()).equals(novosDadosDoPaciente.getCpf())) {
-            throw new CPFExistenteException("A edição de CPF não permitida no sistema");
-        }
+    public Paciente atualizarPorId(String id, Paciente novosDadosDoPaciente) throws Exception {
+        //Optional<Paciente> paciente = Optional.ofNullable(findById(id).orElseThrow(() -> new EntityNotFoundException("Paciente não encontrado com o ID: " + id)));
+        Optional<Paciente> paciente = findById(id);
 
         if (paciente.isPresent()) {
             Paciente novoPaciente = paciente.get();
+
+            if (!novoPaciente.getCpf().equals(novosDadosDoPaciente.getCpf())) {
+                throw new Exception("A edição de CPF não permitida no sistema");
+            }
+
             novoPaciente.setNome(novosDadosDoPaciente.getNome());
             novoPaciente.setSobrenome(novosDadosDoPaciente.getSobrenome());
             novoPaciente.setCpf(novosDadosDoPaciente.getCpf());
@@ -85,33 +77,6 @@ public class PacienteService {
         }
         return null;
 
-    }
-
-    public Paciente atualizar(String nome, String sobrenome, Paciente novoPaciente) throws Exception {
-        Paciente pacienteAntigo = obterPeloNomeESobrenome(nome, sobrenome);
-
-        pacienteAntigo.setNome(novoPaciente.getNome());
-        pacienteAntigo.setSobrenome(novoPaciente.getSobrenome());
-        pacienteAntigo.setIdade(novoPaciente.getIdade());
-        pacienteAntigo.setSexo(novoPaciente.getSexo());
-        pacienteAntigo.setCpf(novoPaciente.getCpf());
-        pacienteAntigo.setContato(novoPaciente.getContato());
-        pacienteAntigo.setLogradouro(novoPaciente.getLogradouro());
-        pacienteAntigo.setNumero(novoPaciente.getNumero());
-        pacienteAntigo.setBairro(novoPaciente.getBairro());
-        pacienteAntigo.setCep(novoPaciente.getCep());
-        pacienteAntigo.setMunicipio(novoPaciente.getMunicipio());
-        pacienteAntigo.setEstado(novoPaciente.getEstado());
-
-        pacienteRepository.save(pacienteAntigo);
-
-        return pacienteAntigo;
-    }
-
-    public void deletar(String nome, String sobrenome) throws Exception {
-        Paciente paciente = obterPeloNomeESobrenome(nome, sobrenome);
-
-        pacienteRepository.delete(paciente);
     }
 
     public void remove(String id) {
