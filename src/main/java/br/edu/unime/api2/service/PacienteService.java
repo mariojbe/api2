@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -52,8 +53,7 @@ public class PacienteService {
     }
 
     public Paciente atualizarPorId(String id, Paciente novosDadosDoPaciente) throws Exception {
-        //Optional<Paciente> paciente = Optional.ofNullable(findById(id).orElseThrow(() -> new EntityNotFoundException("Paciente não encontrado com o ID: " + id)));
-        Optional<Paciente> paciente = findById(id);
+        Optional<Paciente> paciente = Optional.ofNullable(findById(id).orElseThrow(() -> new EntityNotFoundException("Paciente não encontrado com o ID: " + id)));
 
         if (paciente.isPresent()) {
             Paciente novoPaciente = paciente.get();
@@ -66,19 +66,78 @@ public class PacienteService {
             novoPaciente.setSobrenome(novosDadosDoPaciente.getSobrenome());
             novoPaciente.setCpf(novosDadosDoPaciente.getCpf());
             novoPaciente.setIdade(novosDadosDoPaciente.getIdade());
-            novoPaciente.setSexo(novosDadosDoPaciente.getSexo());
-            novoPaciente.setContato(novosDadosDoPaciente.getContato());
-            novoPaciente.setLogradouro(novosDadosDoPaciente.getLogradouro());
-            novoPaciente.setNumero(novosDadosDoPaciente.getNumero());
-            novoPaciente.setCep(novosDadosDoPaciente.getCep());
-            novoPaciente.setContato(novosDadosDoPaciente.getContato());
-            novoPaciente.setMunicipio(novosDadosDoPaciente.getMunicipio());
-            novoPaciente.setEstado(novosDadosDoPaciente.getEstado());
+            if (novosDadosDoPaciente.getSexo() != null) {
+                novoPaciente.setSexo(novosDadosDoPaciente.getSexo());
+            }
+            if (novosDadosDoPaciente.getContato() != null) {
+                novoPaciente.setContato(novosDadosDoPaciente.getContato());
+            }
+            if (novosDadosDoPaciente.getLogradouro() != null) {
+                novoPaciente.setLogradouro(novosDadosDoPaciente.getLogradouro());
+            }
+            if (novosDadosDoPaciente.getNumero() != null) {
+                novoPaciente.setNumero(novosDadosDoPaciente.getNumero());
+            }
+            if (novosDadosDoPaciente.getBairro() != null) {
+                novoPaciente.setBairro(novosDadosDoPaciente.getBairro());
+            }
+            if (novosDadosDoPaciente.getCep() != null) {
+                novoPaciente.setCep(novosDadosDoPaciente.getCep());
+            }
+            if (novosDadosDoPaciente.getMunicipio() != null) {
+                novoPaciente.setMunicipio(novosDadosDoPaciente.getMunicipio());
+            }
+            if (novosDadosDoPaciente.getEstado() != null) {
+                novoPaciente.setEstado(novosDadosDoPaciente.getEstado());
+            }
             pacienteRepository.save(novoPaciente);
             return novoPaciente;
         }
         return null;
+    }
 
+    public Paciente atualizarParcialPorId(String id, Paciente novosDadosDoPaciente) throws Exception {
+        Optional<Paciente> paciente = Optional.ofNullable(findById(id).orElseThrow(() -> new EntityNotFoundException("Paciente não encontrado com o ID: " + id)));
+
+        if (paciente.isPresent()) {
+            Paciente novoPaciente = paciente.get();
+
+            if (!novoPaciente.getCpf().equals(novosDadosDoPaciente.getCpf())) {
+                throw new CPFNotUpdateException("Atenção! A edição do campo CPF não permitida em nosso sistema.");
+            }
+
+            novoPaciente.setNome(novosDadosDoPaciente.getNome());
+            novoPaciente.setSobrenome(novosDadosDoPaciente.getSobrenome());
+            novoPaciente.setCpf(novosDadosDoPaciente.getCpf());
+            novoPaciente.setIdade(novosDadosDoPaciente.getIdade());
+            if (novosDadosDoPaciente.getSexo() != null) {
+                novoPaciente.setSexo(novosDadosDoPaciente.getSexo());
+            }
+            if (novosDadosDoPaciente.getContato() != null) {
+                novoPaciente.setContato(novosDadosDoPaciente.getContato());
+            }
+            if (novosDadosDoPaciente.getLogradouro() != null) {
+                novoPaciente.setLogradouro(novosDadosDoPaciente.getLogradouro());
+            }
+            if (novosDadosDoPaciente.getNumero() != null) {
+                novoPaciente.setNumero(novosDadosDoPaciente.getNumero());
+            }
+            if (novosDadosDoPaciente.getBairro() != null) {
+                novoPaciente.setBairro(novosDadosDoPaciente.getBairro());
+            }
+            if (novosDadosDoPaciente.getCep() != null) {
+                novoPaciente.setCep(novosDadosDoPaciente.getCep());
+            }
+            if (novosDadosDoPaciente.getMunicipio() != null) {
+                novoPaciente.setMunicipio(novosDadosDoPaciente.getMunicipio());
+            }
+            if (novosDadosDoPaciente.getEstado() != null) {
+                novoPaciente.setEstado(novosDadosDoPaciente.getEstado());
+            }
+            pacienteRepository.save(novoPaciente);
+            return novoPaciente;
+        }
+        return null;
     }
 
     public void remove(String id) {

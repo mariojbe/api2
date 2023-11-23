@@ -88,6 +88,19 @@ public class PacienteController {
         return ResponseEntity.ok().body(responseVacina);
     }
 
+    @PatchMapping("{id}")
+    public ResponseEntity<Paciente> atualizarParcialPorId(@RequestBody @Valid Paciente novosDadosDoPaciente,
+                                                          @PathVariable String id) throws Exception {
+        Optional<Paciente> paciente = pacienteService.findById(id);
+
+        if (paciente.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Paciente responseVacina = pacienteService.atualizarParcialPorId(id, novosDadosDoPaciente);
+        return ResponseEntity.ok().body(responseVacina);
+    }
+
     @DeleteMapping("{id}")
     public ResponseEntity<Paciente> remover(@PathVariable String id) {
         Optional<Paciente> paciente = pacienteService.findById(id);
