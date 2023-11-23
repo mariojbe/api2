@@ -42,7 +42,7 @@ public class PacienteController {
         return ResponseEntity.ok().body(paciente.get());
     }
 
-    @GetMapping("{estado}")
+    @GetMapping("/estado/{estado}")
     public List<Paciente> obterPorEstadoPaciente(@PathVariable String estado) {
         List<Paciente> paciente = pacienteService.findByEstado(estado);
 
