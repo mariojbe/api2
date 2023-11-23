@@ -67,8 +67,22 @@ public class PacienteController {
         }
     }
 
-    @PostMapping("/cadastrar")
-    public ResponseEntity<Paciente> inserir(@RequestBody @Valid Paciente paciente) {
+    @GetMapping("/{cpf}")
+    public ResponseEntity<?> findByCpf(@PathVariable String cpf) {
+        try {
+            Optional<Paciente> paciente = pacienteService.findByCpf(cpf);
+
+            return ResponseEntity.ok().body(paciente);
+        } catch (Exception e) {
+            Map<String, String> resposta = new HashMap<>();
+            resposta.put("Paciente Não Encontardo", e.getMessage());
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resposta);
+        }
+    }
+
+    @PostMapping()
+    public ResponseEntity<Paciente> inserir(@RequestBody @Valid Paciente paciente) throws Exception {
         if (pacienteService.inserir(paciente) == null) {
             return ResponseEntity.badRequest().body(paciente);
         }

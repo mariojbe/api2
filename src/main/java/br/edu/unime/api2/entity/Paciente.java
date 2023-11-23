@@ -11,7 +11,7 @@ import javax.validation.constraints.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "pacientes")
+@Document(collection = "Pacientes")
 public class Paciente {
 
     @Id

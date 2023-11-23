@@ -2,9 +2,9 @@ package br.edu.unime.api2.service;
 
 import br.edu.unime.api2.entity.Paciente;
 import br.edu.unime.api2.repository.PacienteRepository;
+import br.edu.unime.api2.service.exceptions.CPFExistenteException;
 import br.edu.unime.api2.service.exceptions.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -29,6 +29,16 @@ public class PacienteService {
         return paciente;
     }
 
+    public Optional<Paciente> findByCpf(String cpf) throws Exception {
+        Optional<Paciente> paciente = pacienteRepository.findByCpf(cpf);
+
+        if (paciente == null) {
+            throw new Exception("Paciente não encontrado!");
+        }
+
+        return paciente;
+    }
+
     public List<Paciente> findByEstado(String estado) {
         try {
             List<Paciente> registroVacinacao = pacienteRepository.findByEstado(estado);
@@ -39,7 +49,12 @@ public class PacienteService {
     }
 
 
-    public Paciente inserir(Paciente paciente) {
+    public Paciente inserir(Paciente paciente) throws Exception {
+
+        if (pacienteRepository.findByCpf(paciente.getCpf()).isPresent()) {
+            throw new CPFExistenteException("O CPF já existe na base de dados!: " + paciente.getCpf());
+        }
+
         pacienteRepository.insert(paciente);
         return paciente;
     }
@@ -108,6 +123,13 @@ public class PacienteService {
 
         return Optional.ofNullable(entity);
     }
+
+
+    /*public void inserirCPF(String cpf) {
+        if (pacienteRepository.findByCpf(cpf)) {
+            throw new CPFExistenteException("CPF já existe: " + cpf);
+        }
+    }*/
 
 }
 

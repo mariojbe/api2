@@ -146,6 +146,20 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
     }
 
+    @ExceptionHandler(CPFExistenteException.class)
+    public ResponseEntity<StandardError> handleCPFExistenteException(CPFExistenteException e, HttpServletRequest request) {
+
+        StandardError err = new StandardError();
+        err.setTimestamp(Instant.now());
+        err.setStatus(HttpStatus.CONFLICT.value());
+        err.setError("CPF NÃO PODE SER DUPLICADO!");
+        err.setMessage(e.getMessage());
+        err.setPath(request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(err);
+
+    }
+
+
     private ResponseEntity<Object> buildErrorResponse(Exception exception, HttpStatus httpStatus, WebRequest request) {
         return buildErrorResponse(exception, exception.getMessage(), httpStatus, request);
     }
